@@ -1,0 +1,21 @@
+replicaCount: 2
+
+image:
+  repository: 685873929524.dkr.ecr.eu-west-2.amazonaws.com/lesson-7-ecr
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 8000
+
+env:
+  POSTGRES_DB: django_db
+  POSTGRES_USER: django_user
+  POSTGRES_PASSWORD: django_pass
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70

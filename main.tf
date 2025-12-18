@@ -48,3 +48,29 @@ module "argo_cd" {
   oidc_provider_arn = module.eks.oidc_provider_arn
   oidc_provider_url = module.eks.oidc_provider_url
 }
+
+module "rds" {
+  source = "./modules/rds"
+
+  name       = "app-db"
+  use_aurora = false
+
+  subnet_private_ids = module.vpc.private_subnet_ids
+  subnet_public_ids  = module.vpc.public_subnet_ids
+  vpc_id             = module.vpc.vpc_id
+
+  publicly_accessible  = false
+
+  engine         = "postgres"
+  engine_version = "14.17"
+  instance_class = "db.t3.micro"
+  multi_az       = false
+
+  db_name  = "appdb"
+  username = "dbuser"
+  password = "secret123"
+
+  tags = {
+    Environment = "dev"
+  }
+}

@@ -30,3 +30,21 @@ module "eks" {
   node_group_desired_capacity = var.node_group_desired_capacity
   tags                 = var.tags
 }
+
+module "jenkins" {
+  source = "./modules/jenkins"
+
+  cluster_name        = module.eks.cluster_name
+oidc_provider_arn  = module.eks.oidc_provider_arn
+oidc_provider_url  = module.eks.oidc_provider_url
+}
+
+module "argo_cd" {
+  source          = "./modules/argo_cd"
+  cluster_name    = module.eks.cluster_name
+  namespace       = "argocd"
+  chart_version   = "5.41.1"
+  repo_url        = "https://github.com/maksar24/hw_devops_goit.git"
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+}

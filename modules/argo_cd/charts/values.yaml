@@ -1,0 +1,16 @@
+repositories:
+  - name: hw-devops-goit
+    url: "https://github.com/maksar24/hw_devops_goit.git"
+    type: git
+
+applications:
+  - name: django-app
+    project: default
+    repo: hw-devops-goit
+    path: charts/django-app
+    targetRevision: lesson-7
+    namespace: django-app
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true

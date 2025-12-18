@@ -1,0 +1,19 @@
+server:
+  service:
+    type: LoadBalancer
+    port: 80
+  ingress:
+    enabled: false
+  extraArgs:
+    - --insecure
+
+configs:
+  cm:
+    repository.credentials: |
+      - url: "https://github.com/maksar24/hw_devops_goit.git"
+        usernameSecret:
+          name: github-token
+          key: username
+        passwordSecret:
+          name: github-token
+          key: password

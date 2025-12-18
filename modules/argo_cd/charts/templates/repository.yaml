@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: my-project
+spec:
+  destinations:
+    - namespace: "*"
+      server: "*"
+  sourceRepos:
+    - https://github.com/maksar24/hw_devops_goit.git

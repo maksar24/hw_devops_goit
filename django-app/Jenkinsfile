@@ -4,15 +4,31 @@ pipeline {
             yaml """
 apiVersion: v1
 kind: Pod
+metadata:
+  labels:
+    app: jenkins-kaniko
 spec:
   serviceAccountName: jenkins-sa
   containers:
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
-    tty: true
-    volumeMounts:
-      - name: workspace
-        mountPath: /workspace
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:v1.16.0-debug
+      imagePullPolicy: Always
+      command:
+        - sleep
+      args:
+        - 99d
+      volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+    - name: git
+      image: alpine/git
+      command:
+        - sleep
+      args:
+        - 99d
+      volumeMounts:
+        - name: workspace
+          mountPath: /workspace
   volumes:
     - name: workspace
       emptyDir: {}
@@ -22,14 +38,16 @@ spec:
 
     environment {
         ECR_REPO_URL = '685873929524.dkr.ecr.eu-west-2.amazonaws.com/lesson-7-ecr'
-        AWS_DEFAULT_REGION = 'eu-west-2'
+        IMAGE_TAG    = "latest"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                container('jnlp') {
-                    git branch: 'final-project', url: 'https://github.com/maksar24/hw_devops_goit.git'
+                container('git') {
+                    sh '''
+                        git clone -b final-project https://github.com/maksar24/hw_devops_goit.git /workspace
+                    '''
                 }
             }
         }
@@ -38,11 +56,11 @@ spec:
             steps {
                 container('kaniko') {
                     sh '''
-                    /kaniko/executor \
-                      --dockerfile=/workspace/Dockerfile \
-                      --context=/workspace \
-                      --destination=$ECR_REPO_URL:latest \
-                      --verbosity info
+                        /kaniko/executor \
+                          --dockerfile=/workspace/Django/Dockerfile \
+                          --context=/workspace/Django \
+                          --destination=$ECR_REPO_URL:$IMAGE_TAG \
+                          --cache=true
                     '''
                 }
             }

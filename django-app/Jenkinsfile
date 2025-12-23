@@ -9,13 +9,12 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    args: ["--dockerfile=/workspace/Dockerfile", "--context=/workspace", "--destination=${ECR_REPO_URL}:latest"]
     volumeMounts:
       - name: workspace
         mountPath: /workspace
-    volumes:
-      - name: workspace
-        emptyDir: {}
+  volumes:
+    - name: workspace
+      emptyDir: {}
 """
         }
     }
@@ -37,8 +36,8 @@ spec:
                 container('kaniko') {
                     sh '''
                     /kaniko/executor \
-                      --dockerfile=Dockerfile \
-                      --context=. \
+                      --dockerfile=/workspace/Dockerfile \
+                      --context=/workspace \
                       --destination=$ECR_REPO_URL:latest
                     '''
                 }

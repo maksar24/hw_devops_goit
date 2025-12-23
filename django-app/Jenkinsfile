@@ -24,7 +24,7 @@ spec:
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/maksar24/hw_devops_goit.git'
+                git branch: 'final-project', url: 'https://github.com/maksar24/hw_devops_goit.git'
             }
         }
 

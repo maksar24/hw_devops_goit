@@ -1,17 +1,3 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "django-app.fullname" . }}
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: {{ include "django-app.name" . }}
-  template:
-    metadata:
-      labels:
-        app: {{ include "django-app.name" . }}
-    spec:
       containers:
         - name: django-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -21,3 +7,11 @@ spec:
                 name: {{ include "django-app.fullname" . }}-config
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+

@@ -57,8 +57,8 @@ spec:
                 container('kaniko') {
                     sh '''
                         /kaniko/executor \
-                          --dockerfile=/workspace/Django/Dockerfile \
-                          --context=/workspace/Django \
+                          --dockerfile=/workspace/django-app/Dockerfile \
+                          --context=/workspace/django-app \
                           --destination=$ECR_REPO_URL:$IMAGE_TAG \
                           --cache=true
                     '''

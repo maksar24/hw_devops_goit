@@ -28,7 +28,9 @@ spec:
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'final-project', url: 'https://github.com/maksar24/hw_devops_goit.git'
+                container('jnlp') {
+                    git branch: 'final-project', url: 'https://github.com/maksar24/hw_devops_goit.git'
+                }
             }
         }
 

@@ -9,7 +9,13 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    tty: true
+    args: ["--dockerfile=/workspace/Dockerfile", "--context=/workspace", "--destination=${ECR_REPO_URL}:latest"]
+    volumeMounts:
+      - name: workspace
+        mountPath: /workspace
+    volumes:
+      - name: workspace
+        emptyDir: {}
 """
         }
     }

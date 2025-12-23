@@ -1,6 +1,6 @@
-# lesson-db-module
+# final-project
 ## Структура
-lesson-db-module/
+final-project/
 │
 ├── main.tf
 ├── backend.tf
@@ -157,6 +157,29 @@ instance_class = "db.t3.small"
 multi_az = true
 - Публічний доступ:
 publicly_accessible = true
+
+
+## Моніторинг та перевірка метрик
+
+Для моніторингу використовуються Prometheus та Grafana, розгорнуті в namespace monitoring.
+
+**Перевірка стану метрик в Grafana**: 
+- Запуск port-forward для доступу до Grafana Dashboard:
+kubectl port-forward svc/monitoring-grafana 3000:80 -n monitoring
+- Відкрити веб-браузер і перейти за адресою: http://localhost:3000/dashboards
+- Перевірити стан метрик по подах, ресурсах та HPA.
+`Примітка: Якщо pod Grafana ще в статусі ContainerCreating, зачекайте декілька секунд і повторіть команду:
+kubectl get pods -n monitoring`
+
+**Автоматичне масштабування (HPA)**
+- HPA налаштовано для Deployment django-app-new-django-app:
+  * Мінімальна кількість реплік: 2
+  * Максимальна кількість реплік: 6
+  * Цільова завантаженість CPU: 70%
+Перевірка стану HPA:
+kubectl get hpa -n django-app
+kubectl describe hpa django-app-new-django-app -n django-app
+`Примітка: CPU може відображатися як <unknown> у відсутності навантаження на поди.`
 
 
 ## Файли

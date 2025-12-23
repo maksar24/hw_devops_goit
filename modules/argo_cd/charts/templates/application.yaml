@@ -2,12 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: django-app
-  namespace: {{ .Release.Namespace }}
+  namespace: argocd
 spec:
   project: default
   source:
-    repoURL: "{{ .Values.repo_url }}"
-    targetRevision: lesson-7
+    repoURL: "https://github.com/maksar24/hw_devops_goit.git"
+    targetRevision: lesson-db-module
     path: charts/django-app
   destination:
     server: https://kubernetes.default.svc
@@ -16,3 +16,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+

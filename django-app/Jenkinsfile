@@ -7,8 +7,9 @@ kind: Pod
 spec:
   serviceAccountName: jenkins-sa
   containers:
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:latest
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    tty: true
 """
         }
     }
@@ -30,10 +31,9 @@ spec:
                 container('kaniko') {
                     sh '''
                     /kaniko/executor \
-                    --dockerfile=Dockerfile \
-                    --context=. \
-                    --destination=$ECR_REPO_URL:latest \
-                    --verbosity=debug
+                      --dockerfile=Dockerfile \
+                      --context=. \
+                      --destination=$ECR_REPO_URL:latest
                     '''
                 }
             }

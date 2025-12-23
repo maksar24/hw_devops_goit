@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/maksar24/hw_devops_goit.git"
-    targetRevision: lesson-db-module
+    targetRevision: final-project
     path: charts/django-app
   destination:
     server: https://kubernetes.default.svc
